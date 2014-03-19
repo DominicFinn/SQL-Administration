@@ -71,9 +71,9 @@ _Good for medium to large tables_
 Works out which table is smallest and puts it in a has table, then runs over the large table matching keys in the hash.
 This method scales and works well in parralel environments apparently... 
 
-* Looking at Query plans	
+> Tip: A sneaky tip is to change the query plan to it's native xml and then do a search for items like "missing" so you can see
+indexes it is noting as missing. 
 
-When you look at the query plans, if you look at a 
 
 */
 

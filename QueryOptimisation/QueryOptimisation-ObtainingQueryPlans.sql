@@ -5,16 +5,27 @@
 ---- Professional SQL Server 2008 Internals and Troubleshooting
 ---- http://technet.microsoft.com/en-us/library/bb326654.aspx
 ---- http://technet.microsoft.com/en-us/library/bb326654.aspx
+---- Pluralsight video SQL Server: Query Plan Analysis
 ---- =============================================
 
 -- you can get a query plan by using the include actual query plan in management studio, if you don't have 
 -- management studio you can do 
 
+
+-- IT'S WORTH NOTING THAT THE TEXT CAPTURES ARE ON A DEPRECATION PLAN, STICK WITH THE XML ONES
+
+-- When you do this, you get an estimated execution plan. Not the actual estimation plan
 --set showplan_xml on
 --go
 ---- run query 
 --go
 --set showplan_xml off
+--go
+
+--set statistics (profile|xml) on
+--go
+
+--set statistics (profile|xml) off
 --go
 
 -- you can also do showplan_text / showplan_all
@@ -29,8 +40,12 @@ select db_name(st.dbid) as database_name
 	,cp.plan_handle
 from sys.dm_exec_cached_plans cp
 cross apply sys.dm_exec_sql_text(cp.plan_handle) st
+-- you can then do where st.text like '%your sp name%'
 
--- with a plan handle from the above, you can then get the execution plan. Click on the query plan and it will graphically
+-- worth noting that dm_exec_text_query_plan works better for ENOURMOUS query plans, you will probably won't need this
+-- if you do, you often have bigger problems...
+
+-- with a plan handle from the above, you can then get the (estimated) execution plan. Click on the query plan and it will graphically
 -- show the xml
 select *
 from sys.dm_exec_query_plan(0x050004007C635A7C40A14C91000000000000000000000000)
@@ -80,3 +95,5 @@ cross apply sys.dm_exec_sql_text(qs.plan_handle) st
 order by total_worker_time / execution_count desc;
 go
 
+
+-- just remember, you can use SQL trace, even extended events can add a big overhead :-/
