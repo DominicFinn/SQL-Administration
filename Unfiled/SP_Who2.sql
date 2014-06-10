@@ -28,7 +28,7 @@ set transaction isolation level read uncommitted
 SELECT session_id, TEXT
 FROM sys.dm_exec_connections
 CROSS APPLY sys.dm_exec_sql_text(most_recent_sql_handle) AS ST
-where session_id = 75     
+where session_id = 85     
 
 -- who has what sessions open, it there are any people with loads of sessions open, slap them
 SELECT login_name ,COUNT(session_id) AS session_count 
@@ -38,7 +38,13 @@ GROUP BY login_name;
 
 select *
 from sys.dm_exec_sessions with (nolock)
-where session_id = 75
+where session_id = 85
+
+-- find the sessions query plan 
+SELECT plan_handle FROM sys.dm_exec_requests WHERE session_id = 85
+
+-- have a peek at the execution plan
+SELECT query_plan FROM sys.dm_exec_query_plan (0x06000600078EDB1C40017BE8000000000000000000000000);
 
 -- find sessions with long running cursors
 
