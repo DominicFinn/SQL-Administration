@@ -16,8 +16,8 @@ SELECT
 	sys.dm_db_index_physical_stats.index_id AS indexid,
 	partition_number AS partitionnum,
 	case 
-		when avg_fragmentation_in_percent > 40 then 'alter index ' + sys.indexes.name + '	on ' + sys.objects.name + ' rebuild'	
-		else 'alter index '  + sys.indexes.name +  '	on '  + sys.objects.name +  ' reorganize'	
+		when avg_fragmentation_in_percent > 40 then 'alter index ' + sys.indexes.name + ' on ' + sys.objects.name + ' rebuild'	
+		else 'alter index '  + sys.indexes.name +  ' on '  + sys.objects.name +  ' reorganize'	
 	end as [script]
 FROM sys.dm_db_index_physical_stats (DB_ID(N'NameOfDatabase'), NULL, NULL , NULL, 'SAMPLED')
 	inner join sys.objects 
