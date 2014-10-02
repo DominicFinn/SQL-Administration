@@ -38,7 +38,7 @@ SELECT DB.name AS DatabaseName
 FROM sys.databases AS DB
      INNER JOIN sys.dm_tran_locks AS TL
          ON DB.database_id = TL.resource_database_id
-where DB.name = 'MyUniDays'
+where DB.name = 'something'
 
 SELECT object_name(object_id), *
     FROM sys.partitions
